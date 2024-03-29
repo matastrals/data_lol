@@ -58,8 +58,8 @@ function Role() {
         x={x}
         y={y}
         fill="white"
-        textAnchor={x > cx ? "start" : "end"}
-        dominantBaseline="central"
+        textAnchor="middle"
+        dominantBaseline="middle"
       >
         {`${name}: ${(percent * 100).toFixed(0)}%`}
       </text>
