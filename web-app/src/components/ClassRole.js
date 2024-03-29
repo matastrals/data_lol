@@ -92,7 +92,7 @@ function ClassRole() {
     };
 
     return (
-        <div>
+        <div className="flex">
             <div className="button-container">
                 {Object.keys(classRoleData).map((className) => (
                     <button

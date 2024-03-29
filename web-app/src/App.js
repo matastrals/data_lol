@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import Role from "./components/Role";
-import "./index.css";
 import Class from "./components/Class";
 import ClassRole from "./components/ClassRole";
+import Pickrate from "./components/Pickrate";
+import Winrate from "./components/Winrate";
+import RoleTier from "./components/RoleTier";
+
+import "./index.css";
 
 function App() {
   const [filter, setFilter] = useState('role');
@@ -19,6 +23,12 @@ function App() {
         return <Class />;
       case 'classrole':
         return <ClassRole />;
+      case 'pickrate':
+        return <Pickrate />;
+      case 'winrate':
+        return <Winrate />;
+      case 'roleTier':
+        return <RoleTier />;
       default:
         return null;
     }
@@ -30,6 +40,9 @@ function App() {
         <button className="navbar-btn" onClick={() => handleFilterChange('role')}>Role pickrate</button>
         <button className="navbar-btn" onClick={() => handleFilterChange('class')}>Class pickrate</button>
         <button className="navbar-btn" onClick={() => handleFilterChange('classrole')}>Class by role pickrate</button>
+        <button className="navbar-btn" onClick={() => handleFilterChange('pickrate')}>Champ pickrate</button>
+        <button className="navbar-btn" onClick={() => handleFilterChange('winrate')}>Champ winrate</button>
+        <button className="navbar-btn" onClick={() => handleFilterChange('roleTier')}>Role tier</button>
       </nav>
       <RenderComponent/>
     </div>
