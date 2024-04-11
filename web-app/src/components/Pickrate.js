@@ -32,7 +32,7 @@ function Pickrate() {
                 {pickData.map((data) => (
                     <tr>
                         <td>{data.Name}</td>
-                        <td>{data['Moyenne Pick %']}</td>
+                        <td>{data['Pick %']}</td>
                     </tr>
                 ))}
             </tbody>

@@ -1,5 +1,5 @@
 import pandas as pd
-import flask as fk, jsonify
+import flask as fk, jsonify, requests
 from flask_cors import CORS
 
 app = fk.Flask(__name__, static_url_path='/static')
@@ -38,22 +38,6 @@ def role_tier(role):
     return names_tiers.to_json(orient='records')
 
 
-@app.route("/pickrate")
-def pourcent_pickrate():
-    df['Pick %'] = df['Pick %'].astype(str).str.rstrip('%').astype(float)
-    moyenne_pickrate_df = df.groupby('Name')['Pick %'].mean().reset_index()
-    moyenne_pickrate_df.rename(columns={'Pick %': 'Pick %'}, inplace=True)
-    return moyenne_pickrate_df.to_json(orient='records')
-
-
-@app.route("/winrate")
-def pourcent_winrate():
-    df['Win %'] = df['Win %'].str.rstrip('%').astype(float)
-    sorted_df = df.sort_values(by='Name')
-    names_win_percentage = sorted_df[['Name', 'Win %']]
-    return names_win_percentage.to_json(orient='records')
-
-
 @app.route("/class/role")
 def class_role_percentages():
     class_role_counts = df.groupby(['Class', 'Role']).size().reset_index(name='Count')
@@ -69,9 +53,32 @@ def class_role_percentages():
     return class_role_percentages_formatted
 
 
+@app.route("/pickrate")
+def pourcent_pickrate():
+    df['Pick %'] = df['Pick %'].astype(str).str.rstrip('%').astype(float)
+    moyenne_pickrate_df = df.groupby('Name')['Pick %'].mean().reset_index().round(2)
+    moyenne_pickrate_df.rename(columns={'Pick %': 'Pick %'}, inplace=True)
+    return moyenne_pickrate_df.to_json(orient='records')
+
+
+@app.route("/pickrate/<role>")
+def pourcent_pickrate_par_role(role):
+    df['Pick %'] = df['Pick %'].astype(str).str.rstrip('%').astype(float)
+    role_df = df[df['Role'] == role.upper()]
+    return role_df[['Name', 'Pick %']].to_json(orient='records')
+
+
+@app.route("/winrate")
+def pourcent_winrate():
+    df['Win %'] = df['Win %'].astype(str).str.rstrip('%').astype(float)
+    sorted_df = df.sort_values(by='Name')
+    names_win_percentage = sorted_df[['Name', 'Win %']]
+    return names_win_percentage.to_json(orient='records')
+
+
 @app.route("/winrate/role")
 def winrate_by_role():
-    df['Win %'] = df['Win %'].str.rstrip('%').astype(float)
+    df['Win %'] = df['Win %'].astype(str).str.rstrip('%').astype(float)
     winrate_percentages = df.groupby('Role')['Win %'].mean()
     winrate_percentages = winrate_percentages.apply(lambda x: f"{x:.2f}%")
     return winrate_percentages.to_json()
