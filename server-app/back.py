@@ -1,5 +1,5 @@
 import pandas as pd
-import flask as fk, jsonify, requests
+import flask as fk
 from flask_cors import CORS
 
 app = fk.Flask(__name__, static_url_path='/static')
